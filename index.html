@@ -171,7 +171,7 @@
     
     /* Font Selector */
     .select-field {
-      background: rgba(0, 0, 0, 0.5);
+      background: #1f2937; /* Solid dark gray for better contrast */
       border: 1px solid #dc2626;
       color: white;
     }
@@ -181,6 +181,15 @@
       color: #fff;
     }
     
+    /* Input Field Improvements */
+    .input-field {
+      background: #1f2937; /* Solid dark background */
+    }
+    
+    .input-field::placeholder {
+      color: #9ca3af; /* Darker gray for placeholder */
+    }
+    
     /* Mobile responsiveness enhancements */
     @media (max-width: 640px) {
       .hero-title { font-size: 2rem; }
@@ -188,7 +197,7 @@
     }
   </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen p-4 text-white overflow-hidden">
+<body class="flex flex-col items-center justify-center min-h-screen p-4 text-white">
   <!-- Hero Header -->
   <header class="text-center mb-8 fade-in">
     <h1 class="hero-title text-5xl md:text-6xl font-bold mb-2 tracking-wide">
@@ -207,7 +216,7 @@
         type="text"
         placeholder="E.g., Welcome"
         maxlength="20"
-        class="input-field w-full p-4 text-xl bg-gray-800/50 rounded-xl border-2 border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-red-600"
+        class="input-field w-full p-4 text-xl rounded-xl border-2 border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-red-600"
         value=""
       />
     </div>
@@ -215,7 +224,7 @@
     <!-- Font Selection -->
     <div class="mb-6">
       <label for="fontSelect" class="block text-sm font-medium mb-2 text-gray-300">Choose Font:</label>
-      <select id="fontSelect" class="select-field w-full p-4 text-xl bg-gray-800/50 rounded-xl border-2 border-gray-700 text-white focus:outline-none focus:border-red-600">
+      <select id="fontSelect" class="select-field w-full p-4 text-xl rounded-xl border-2 border-gray-700 text-white focus:outline-none focus:border-red-600">
         <option value="winnie">Winnie Typeface</option>
         <option value="cartoon">Cartoon Network Typeface</option>
         <option value="shaun">Shaun Sheep Typeface</option>
