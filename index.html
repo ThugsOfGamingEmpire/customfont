@@ -7,23 +7,48 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <style>
+    /* Font Faces for All Options */
     @font-face {
-      font-family: 'MyCustomFont';
-      src: url('MyCustomFont.ttf') format('truetype'); /* Update to your TTF filename */
+      font-family: 'WinnieTypeface';
+      src: url('winnie_typeface.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
       font-display: swap;
     }
     
-    .custom-font {
-      font-family: 'MyCustomFont', sans-serif;
-      /* Customize: e.g., font-weight: bold; stroke: #fff; stroke-width: 1; for outlines */
+    @font-face {
+      font-family: 'CartoonNetworkTypeface';
+      src: url('cartoon_network_typeface.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
     }
+    
+    @font-face {
+      font-family: 'ShaunSheepTypeface';
+      src: url('shaun_sheep_typeface.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    @font-face {
+      font-family: 'JackieChanTypeface';
+      src: url('jackie_chan_typeface.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    .custom-font-winnie { font-family: 'WinnieTypeface', sans-serif; }
+    .custom-font-cartoon { font-family: 'CartoonNetworkTypeface', sans-serif; }
+    .custom-font-shaun { font-family: 'ShaunSheepTypeface', sans-serif; }
+    .custom-font-jackie { font-family: 'JackieChanTypeface', sans-serif; }
     
     .svg-preview svg {
       max-width: 100%;
       height: auto;
-      filter: drop-shadow(0 4px 8px rgba(139, 92, 246, 0.3));
+      filter: drop-shadow(0 4px 8px rgba(220, 38, 38, 0.3));
       transition: transform 0.3s ease, opacity 0.3s ease;
     }
     
@@ -54,7 +79,7 @@
       50% { background-position: 100% 50%; }
     }
     
-    .input-field:focus {
+    .input-field:focus, .select-field:focus {
       box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
       transform: scale(1.02);
       transition: all 0.2s ease;
@@ -144,6 +169,18 @@
       cursor: pointer;
     }
     
+    /* Font Selector */
+    .select-field {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #dc2626;
+      color: white;
+    }
+    
+    .select-field option {
+      background: #000;
+      color: #fff;
+    }
+    
     /* Mobile responsiveness enhancements */
     @media (max-width: 640px) {
       .hero-title { font-size: 2rem; }
@@ -175,11 +212,22 @@
       />
     </div>
     
+    <!-- Font Selection -->
+    <div class="mb-6">
+      <label for="fontSelect" class="block text-sm font-medium mb-2 text-gray-300">Choose Font:</label>
+      <select id="fontSelect" class="select-field w-full p-4 text-xl bg-gray-800/50 rounded-xl border-2 border-gray-700 text-white focus:outline-none focus:border-red-600">
+        <option value="winnie">Winnie Typeface</option>
+        <option value="cartoon">Cartoon Network Typeface</option>
+        <option value="shaun">Shaun Sheep Typeface</option>
+        <option value="jackie">Jackie Chan Typeface</option>
+      </select>
+    </div>
+    
     <!-- Customization Options -->
     <div class="mb-6 space-y-4">
       <div>
         <label class="block text-sm font-medium mb-2 text-gray-300">Font Size:</label>
-        <input type="range" id="fontSize" min="24" max="80" value="48" class="slider w-full" />
+        <input type="range" id="fontSize" min="24" max="100" value="48" class="slider w-full" />
         <span id="sizeValue" class="text-sm text-gray-400">48px</span>
       </div>
       
@@ -248,6 +296,7 @@
     const downloadBtn = document.getElementById('downloadBtn');
     const pngBtn = document.getElementById('pngBtn');
     const copyBtn = document.getElementById('copyBtn');
+    const fontSelect = document.getElementById('fontSelect');
     const fontSizeSlider = document.getElementById('fontSize');
     const sizeValue = document.getElementById('sizeValue');
     const textColor = document.getElementById('textColor');
@@ -257,23 +306,36 @@
     let currentFontSize = 48;
     let currentTextColor = '#ffffff';
     let currentBgColor = '#000000';
+    let selectedFontClass = 'custom-font-winnie';
+
+    function getFontFamily() {
+      const font = fontSelect.value;
+      switch(font) {
+        case 'winnie': return 'WinnieTypeface';
+        case 'cartoon': return 'CartoonNetworkTypeface';
+        case 'shaun': return 'ShaunSheepTypeface';
+        case 'jackie': return 'JackieChanTypeface';
+        default: return 'WinnieTypeface';
+      }
+    }
 
     function generateSVG() {
       const text = input.value.trim() || 'WELCOME';
       currentFontSize = parseInt(fontSizeSlider.value);
       currentTextColor = textColor.value;
       currentBgColor = bgColor.value;
+      const fontFamily = getFontFamily();
       
       svgContent = `
-        <svg width="600" height="200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200">
+        <svg width="700" height="250" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 250">
           <defs>
             <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" style="stop-color:${currentBgColor};stop-opacity:1" />
               <stop offset="100%" style="stop-color:#111;stop-opacity:1" />
             </linearGradient>
           </defs>
-          <rect width="100%" height="100%" fill="url(#bgGrad)" rx="15" />
-          <text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" class="custom-font" font-size="${currentFontSize}" fill="${currentTextColor}" letter-spacing="1" stroke="#111" stroke-width="0.5">${text.toUpperCase()}</text>
+          <rect width="100%" height="100%" fill="url(#bgGrad)" rx="20" />
+          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="${fontFamily}" font-size="${currentFontSize}" fill="${currentTextColor}" letter-spacing="1" stroke="#111" stroke-width="0.5">${text.toUpperCase()}</text>
         </svg>
       `;
       preview.innerHTML = svgContent;
@@ -306,7 +368,9 @@
       html2canvas(preview, { 
         backgroundColor: null,
         scale: 2,
-        useCORS: true
+        useCORS: true,
+        width: 700,
+        height: 250
       }).then(canvas => {
         const link = document.createElement('a');
         link.download = `${input.value.toUpperCase() || 'LOGO'}-typography.png`;
@@ -334,6 +398,7 @@
 
     // Event Listeners
     input.addEventListener('input', generateSVG);
+    fontSelect.addEventListener('change', generateSVG);
     fontSizeSlider.addEventListener('input', generateSVG);
     textColor.addEventListener('input', generateSVG);
     bgColor.addEventListener('input', generateSVG);
