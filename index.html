@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyFont Logo Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'MyCustomFont';
+      src: url('MyCustomFont.ttf') format('truetype'); /* Update to your TTF filename */
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    .custom-font {
+      font-family: 'MyCustomFont', sans-serif;
+      /* Customize: e.g., font-weight: bold; stroke: #fff; stroke-width: 1; for outlines */
+    }
+    
+    .svg-preview svg {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4">
+  <h1 class="text-4xl font-bold text-white mb-8">MyFont Logo Generator</h1>
+  
+  <div class="bg-gray-800 rounded-lg p-6 shadow-lg max-w-md w-full">
+    <input
+      id="textInput"
+      type="text"
+      placeholder="Enter your text..."
+      maxlength="20"
+      class="w-full p-4 text-xl bg-gray-700 text-white rounded-md border border-gray-600 focus:outline-none focus:border-blue-500"
+    />
+    
+    <div id="preview" class="mt-6 p-6 bg-black rounded-md">
+      <!-- SVG will be inserted here -->
+    </div>
+    
+    <button
+      id="downloadBtn"
+      class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition duration-200"
+    >
+      Download SVG
+    </button>
+  </div>
+  
+  <p class="text-gray-400 mt-8 text-sm">Generate cool logos with your custom font!</p>
+
+  <script>
+    const input = document.getElementById('textInput');
+    const preview = document.getElementById('preview');
+    const downloadBtn = document.getElementById('downloadBtn');
+    
+    let svgContent = '';
+
+    function generateSVG() {
+      const text = input.value || 'Your Name';
+      svgContent = `
+        <svg width="800" height="200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100%" height="100%" fill="#000" />
+          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="custom-font" font-size="60" fill="#fff" letter-spacing="2">${text.toUpperCase()}</text>
+        </svg>
+      `;
+      preview.innerHTML = svgContent;
+    }
+
+    function downloadSVG() {
+      if (!svgContent) return;
+      const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${input.value.toUpperCase() || 'LOGO'}-logo.svg`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    input.addEventListener('input', generateSVG);
+    downloadBtn.addEventListener('click', downloadSVG);
+    
+    // Initial load
+    generateSVG();
+  </script>
+</body>
+</html>
